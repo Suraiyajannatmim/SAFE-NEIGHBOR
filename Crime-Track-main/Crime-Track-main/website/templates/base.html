@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <title>{% block title %}Home{% endblock %}</title>
+
+    <style>
+      /* Global Styles */
+      body {
+        background-color: #e6f0fa; 
+        color: #2c3e50;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        line-height: 1.6;
+      }
+
+      .gradient-text {
+        background-clip: text;
+        -webkit-background-clip: text;
+        background-image: linear-gradient(90deg, #2c3e50, #4a90e2);
+        -webkit-text-fill-color: transparent;
+      }
+      .navbar {
+        background: linear-gradient(145deg, rgba(158, 230, 223, 0.95), rgba(50, 66, 147, 0.95),rgba(18, 89, 37, 0.95)); /* Glassmorphism with gradient */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: .8rem;
+        border-bottom: 1px solid rgba(209, 217, 230, 0.5);
+      }
+
+      .navbar-brand {
+        background: linear-gradient(90deg, #e5440e, #4a90e2,#e5440e); /* Gradient text */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 780;
+        font-size: 2.2rem; /* Slightly larger */
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* For visibility */
+        transition: opacity 0.3s ease;
+        position: relative;
+      }
+      .navbar-brand:hover {
+        opacity: 0.8; 
+      }
+      .navbar-brand::after {
+        content: '';
+        width: 0;
+        height: 2px;
+        background: #4a90e2;
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        transition: width 0.3s ease;
+      }
+      .navbar-brand:hover::after {
+        width: 100%;
+      }
+
+      .navbar-toggler {
+        border: none;
+        padding: 0.5rem;
+        transition: transform 0.3s ease;
+      }
+      .navbar-toggler:focus {
+        outline: none;
+      }
+      .navbar-toggler:hover {
+        transform: rotate(90deg);
+      }
+      .navbar-toggler-icon {
+        background-image: none !important;
+        color: #4a90e2;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nav-link {
+        color: #d3ddec !important;
+        font-size: 1.6rem; /* Larger text */
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        margin-left: 1.2rem; /* Slight left shift */
+        position: relative;
+        transition: color 0.3s ease;
+      }
+      .nav-link:hover {
+        color: #4a90e2 !important;
+      }
+      .nav-link::after {
+        content: '';
+        width: 0;
+        height: 2px;
+        background: #4a90e2;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: width 0.3s ease;
+      }
+      .nav-link:hover::after {
+        width: 80%;
+      }
+
+      .container {
+        max-width: 1200px; 
+        padding: 2.5rem 1rem;
+      }
+
+      .alert {
+        background: rgba(255, 255, 255, 0.95); 
+        border: none;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .alert-success {
+        background: rgba(212, 237, 218, 0.95);
+        color: #155724;
+      }
+      .alert-danger {
+        background: rgba(248, 215, 218, 0.95);
+        color: #721c24;
+      }
+      .alert::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: #4a90e2;
+        opacity: 0.7;
+      }
+      .alert-success::before {
+        background: #28a745;
+      }
+      .alert-danger::before {
+        background: #dc3545;
+      }
+      .alert-dismissible .close {
+        color: #2c3e50;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+      }
+      .alert-dismissible .close:hover {
+        opacity: 1;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .navbar-brand {
+          font-size: 1.5rem; /* Slightly smaller on mobile */
+        }
+        .nav-link {
+          font-size: 1rem; /* Slightly smaller on mobile */
+          margin-left: 0; /* Remove left shift on mobile */
+          padding: 0.5rem 0.75rem;
+        }
+        .navbar-nav {
+          padding: 0.5rem 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="/" data-toggle="tooltip" title="CrimeTrack Homepage">CrimeTrack</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbar"
+    aria-controls="navbar"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon">☰</span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbar">
+    <ul class="navbar-nav ml-auto">
+      {% if current_user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" id="home" href="/" data-toggle="tooltip" title="Go to homepage">Home</a>
+        </li>
+        {% if user.id == 1 %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('views.manage_events') }}">Manage Events</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('views.admin_contributions') }}">Contributions</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('views.upcoming_events') }}">
+            Events
+            {% if upcoming_events > 0 %}
+            <span class="badge badge-danger">{{ upcoming_events }}</span>
+            {% endif %}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('views.user_contributions') }}">My Contributions</a>
+        </li>
+        {% endif %}
+        {% if user.id == 1 %}
+        <li class="nav-item">
+          <a class="nav-link" id="admin-tools" href="/admin-tools" data-toggle="tooltip" title="Access admin tools">Tools</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" id="live-map" href="{{ url_for('views.live_map') }}" data-toggle="tooltip" title="View live crime map">LiveMap</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="logout" href="/logout" data-toggle="tooltip" title="Sign out">Logout</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" id="login" href="/login" data-toggle="tooltip" title="Sign in to your account">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="signUp" href="/sign-up" data-toggle="tooltip" title="Create a new account">Sign Up</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container mt-3">
+      {% for category, message in messages %}
+      <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="container">{% block content %} {% endblock %}</div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      // Initialize tooltips
+      $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
+
+    {% block javascript %}
+    {% endblock %}
+  </body>
+</html>

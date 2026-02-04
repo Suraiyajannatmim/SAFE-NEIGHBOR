@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% block title %}Admin Tools{% endblock %}
+{% block content %}
+
+<style>
+    body {
+        background-color: #e6f0fa;
+        color: #2c3e50;
+    }
+
+    .admin-container {
+        background: rgba(255, 255, 255, 0.97);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        padding: 2.5rem;
+        margin: 2rem auto;
+        max-width: 1200px;
+        animation: fadeIn 0.5s ease;
+    }
+
+    h1, h2 {
+        font-weight: 700;
+        background: linear-gradient(90deg, #2c3e50, #4a90e2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    h1::after, h2::after {
+        content: '';
+        width: 50px;
+        height: 3px;
+        background: #4a90e2;
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+    }
+
+    .table-container {
+        background: #f5f7fa;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #d1d9e6;
+    }
+
+    th {
+        background: linear-gradient(145deg, #f5f7fa, #e6f0fa);
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    tr {
+        transition: all 0.3s ease;
+    }
+
+    tr:hover {
+        background: #f0f7ff;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .admin-forms {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+
+    .admin-form {
+        background: linear-gradient(145deg, #ffffff, #f5f7fa);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .admin-form:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: block;
+        color: #34495e;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ccd6e0;
+        border-radius: 12px;
+        background: #fff;
+        color: #2c3e50;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+
+    input:focus, select:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 8px rgba(74, 144, 226, 0.35);
+        outline: none;
+    }
+
+    .btn {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(145deg, #4a90e2, #357abd);
+        color: #fff;
+    }
+
+    .btn-danger {
+        background: linear-gradient(145deg, #e74c3c, #c0392b);
+        color: #fff;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="admin-container">
+    <h1>Administrative Tools</h1>
+
+    <div class="table-container">
+        <h2>Crime Reports Management</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Location</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Posted By</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for crime in crimes %}
+                    <tr>
+                        <td>{{ crime.title }}</td>
+                        <td>{{ crime.location }}</td>
+                        <td>{{ crime.data }}</td>
+                        <td>{{ crime.date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ crime.user.first_name }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('views.delete_crime', crime_id=crime.id) }}">
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="admin-forms">
+        <div class="admin-form">
+            <h2>Add Category</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="category-name">New Category Name:</label>
+                    <input type="text" name="category-name" id="category-name" required placeholder="Enter category name..." />
+                </div>
+                <button type="submit" name="add-category" class="btn btn-primary">Add Category</button>
+            </form>
+        </div>
+
+        <div class="admin-form">
+            <h2>Remove Category</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="category-id">Select Category to Remove:</label>
+                    <select name="category-id" id="category-id" required>
+                        {% for category in categories %}
+                            <option value="{{ category.cat_id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" name="remove-category" class="btn btn-danger">Remove Category</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
